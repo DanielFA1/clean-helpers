@@ -1,0 +1,63 @@
+{
+  "name": "clean-helpers",
+  "version": "1.0.0",
+  "description": "Helpers para Node.js com foco BR: money, date, validation, string, async e etc.",
+  "keywords": [
+    "helpers",
+    "utils",
+    "brasil",
+    "money",
+    "currency",
+    "cpf",
+    "cnpj",
+    "cep",
+    "ncm",
+    "cest",
+    "date",
+    "string",
+    "async"
+  ],
+  "license": "MIT",
+  "author": "Farias",
+  "main": "./src/index.js",
+  "type": "commonjs",
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.js",
+    "./money": "./src/money/index.js",
+    "./string": "./src/string/index.js",
+    "./number": "./src/number/index.js",
+    "./date": "./src/date/index.js",
+    "./async": "./src/async/index.js",
+    "./validation": "./src/validation/index.js",
+    "./regex": "./src/regex/index.js",
+    "./search": "./src/search/index.js",
+    "./http": "./src/http/index.js",
+    "./geo": "./src/geo/index.js",
+    "./stats": "./src/stats/index.js",
+    "./cache": "./src/cache/index.js",
+    "./parse": "./src/parse/index.js",
+    "./id": "./src/id/index.js"
+  },
+  "scripts": {
+    "test": "node --test",
+    "prepublishOnly": "node --test",
+    "pack:dry": "npm pack --dry-run"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanielFA1/clean-helpers.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DanielFA1/clean-helpers/issues"
+  },
+  "homepage": "https://github.com/DanielFA1/clean-helpers#readme"
+}
