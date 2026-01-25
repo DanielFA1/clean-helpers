@@ -50,19 +50,6 @@ describe("string.casefold", () => {
     });
 });
 
-describe("string.safeRegex", () => {
-    it("escapa caracteres especiais", () => {
-        const rx = str.safeRegex("a+b(c)");
-        assert.ok(rx.test("a+b(c)"));
-        assert.ok(!rx.test("abcc"));
-    });
-
-    it("trunca maxLen", () => {
-        const rx = str.safeRegex("x".repeat(500), "i", { maxLen: 10 });
-        assert.ok(rx.source.length <= 10 + 10); // escape pode aumentar, só garante que não explode
-    });
-});
-
 describe("string.includesLoose", () => {
     it("ignora acentos/case/pontuação", () => {
         assert.equal(str.includesLoose("Refrigerante Coca-Cola 2L", "coca cola"), true);

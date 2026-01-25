@@ -57,9 +57,6 @@ describe("index exports", () => {
     // validation
     assert.equal(h.isCEP("01001-000"), true);
 
-    // regex
-    const r = h.safeRegex("Coca-Cola");
-    assert.equal(r.test("coca-cola"), true);
 
     // stats
     assert.equal(h.quantile([1, 2, 3, 4], 0.5), 2.5);

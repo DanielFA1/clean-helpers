@@ -1,37 +1,107 @@
 # clean-helpers
 
-![NPM Version](https://img.shields.io/badge/npm-v1.0.0-blue?style=flat-square)
-![Node Version](https://img.shields.io/badge/node-%3E%3D18-green?style=flat-square)
-![Dependencies](https://img.shields.io/badge/dependencies-0-success?style=flat-square)
-![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?style=flat-square)
+![npm](https://img.shields.io/npm/v/clean-helpers)
+![downloads](https://img.shields.io/npm/dm/clean-helpers)
+![node](https://img.shields.io/node/v/clean-helpers)
+![license](https://img.shields.io/npm/l/clean-helpers)
+![CI](https://github.com/DanielFA1/clean-helpers/actions/workflows/ci.yml/badge.svg)
 
-Um kit de utilitários robustos, testados e **sem dependências**, focado em resolver os problemas do dia a dia do desenvolvimento brasileiro: formatação de R$, validação de CPF/CNPJ, datas em UTC-safe, normalização de texto e muito mais.
+Um kit de utilitários **robustos, testados e sem dependências**, focado em resolver problemas reais do dia a dia do desenvolvimento **brasileiro**: dinheiro pt-BR (sem dor com float), datas (ISO/BR safe), normalização de texto, validações (CPF/CNPJ/CEP/EAN/NCM/CEST) e helpers async — tudo **leve e modular**.
+
+- ✅ **BR-first**: entende `R$ 1.234,56`, `DD/MM/YYYY` e particularidades comuns  
+- ✅ **Zero deps**: não incha sua `node_modules`  
+- ✅ **Modular**: importe só o que usar (`clean-helpers/money`, `clean-helpers/date`, …)  
+- ✅ **Node >= 18** + testes com `node --test`
+
+---
+
+## Instalação
+
+```bash
+npm i clean-helpers
+# ou: pnpm add clean-helpers
+# ou: yarn add clean-helpers
+```
+
+---
+
+## 30 segundos (copie e rode)
+
+```js
+const { money, date, validation, search, string, async: A } = require("clean-helpers");
+
+(async () => {
+  // dinheiro (seguro e com cents)
+  console.log(money.parseMoneyStrict("R$ 1.234,56"));
+  // { ok:true, value:1234.56, cents:123456, ... }
+
+  // datas (ISO/BR safe)
+  console.log(date.parseISODateOrBR("2026-01-21")); // Date local (sem bug UTC)
+  console.log(date.formatBRDatetime(new Date()));   // "21/01/2026 18:40"
+
+  // validações BR
+  console.log(validation.isCPF("529.982.247-25")); // true
+  console.log(validation.isCEP("01001-000"));      // true
+
+  // busca / texto
+  console.log(search.makeSearchTokens("Coca-Cola 2 L Retornável"));
+  // ["coca","cola","2l","retornavel"]
+
+  console.log(string.includesLoose("Refrigerante Coca-Cola 2L", "coca cola 2l")); // true
+
+  // async
+  await A.sleep(50);
+})();
+```
+
+➡️ Quer carregar só um módulo específico?
+
+```js
+const money = require("clean-helpers/money");
+```
+
+---
+
+## Conteúdo
+
+- [Por que usar isso?](#por-que-usar-isso)
+- [Destaques](#destaques)
+- [Uso rápido](#uso-rápido)
+- [Módulos](#módulos)
+- [Demonstrações (mais completas)](#demonstrações-mais-completas)
+- [Testes](#testes)
+- [Versionamento](#versionamento)
+- [Licença](#licença)
 
 ---
 
 ## 🎯 Por que usar isso?
 
 Você provavelmente já passou por isso:
+
 1. Pede para a IA gerar uma função de validar CPF e cola em `utils.js`.
 2. Copia um regex de e-mail de um projeto antigo que falha em casos novos.
 3. Importa bibliotecas gigantes só para formatar uma data simples.
 4. Tem bugs de arredondamento financeiro porque tratou dinheiro como `float`.
 
-O **clean-helpers** centraliza essas soluções de forma:
-* ✅ **Segura:** Testes unitários cobrindo edge-cases reais.
-* ✅ **Modular:** Importe apenas o que usar (tree-shaking friendly).
-* ✅ **Zero Deps:** Não incha sua `node_modules`.
-* ✅ **BR First:** Entende nativamente `R$ 1.234,56`, datas `DD/MM/YYYY` e fusos horários locais.
+O clean-helpers centraliza essas soluções de forma:
+
+- ✅ **Segura**: testes unitários cobrindo edge-cases reais.
+- ✅ **Modular**: importe apenas o que usar (tree-shaking friendly).
+- ✅ **Zero Deps**: não incha sua `node_modules`.
+- ✅ **BR First**: entende nativamente `R$ 1.234,56`, datas `DD/MM/YYYY` e fusos horários locais.
+
 > Objetivo: parar de espalhar “helpers soltos” pelo projeto e centralizar utilidades num pacote pequeno, previsível e bem testado.
+
 ---
 
 ## Destaques
 
-- ✅ **Zero deps**
-- ✅ **Node >= 18**
-- ✅ **Modular** (importe só o que precisa: `clean-helpers/money`, `clean-helpers/date`, …)
-- ✅ **Foco BR** (pt-BR, datas, CPF/CNPJ, etc.)
-- ✅ **Testes** com `node --test`
+- ✅ Zero deps
+- ✅ Node >= 18
+- ✅ Modular (importe só o que precisa: `clean-helpers/money`, `clean-helpers/date`, …)
+- ✅ Foco BR (pt-BR, datas, CPF/CNPJ, etc.)
+- ✅ Testes com `node --test`
 
 ---
 
@@ -42,27 +112,29 @@ O **clean-helpers** centraliza essas soluções de forma:
 ```js
 const { money, date, validation, search, string, async: A } = require("clean-helpers");
 
-// dinheiro
-const r = money.parseMoneyStrict("R$ 1.234,56");
-console.log(r); // { ok:true, value:1234.56, cents:123456, ... }
+(async () => {
+  // dinheiro
+  const r = money.parseMoneyStrict("R$ 1.234,56");
+  console.log(r); // { ok:true, value:1234.56, cents:123456, ... }
 
-// datas (parse BR e ISO seguro)
-console.log(date.formatBRDatetime(new Date()));  // "21/01/2026 18:40"
-console.log(date.parseISODateOrBR("2026-01-21")); // Date (local)
+  // datas (parse BR e ISO seguro)
+  console.log(date.formatBRDatetime(new Date()));   // "21/01/2026 18:40"
+  console.log(date.parseISODateOrBR("2026-01-21")); // Date (local)
 
-// validações
-console.log(validation.isCPF("529.982.247-25")); // true
-console.log(validation.isCEP("01001-000"));      // true
+  // validações
+  console.log(validation.isCPF("529.982.247-25")); // true
+  console.log(validation.isCEP("01001-000"));      // true
 
-// busca
-console.log(search.makeSearchTokens("Coca-Cola 2 L Retornável"));
-// ["coca","cola","2l","retornavel"]
+  // busca
+  console.log(search.makeSearchTokens("Coca-Cola 2 L Retornável"));
+  // ["coca","cola","2l","retornavel"]
 
-// string “solta” (sem acento/pontuação/case)
-console.log(string.includesLoose("Refrigerante Coca-Cola 2L", "coca cola 2l")); // true
+  // string “solta” (sem acento/pontuação/case)
+  console.log(string.includesLoose("Refrigerante Coca-Cola 2L", "coca cola 2l")); // true
 
-// async
-await A.sleep(100);
+  // async
+  await A.sleep(100);
+})();
 ```
 
 ### 2) Import “flat” (atalhos)
@@ -87,14 +159,16 @@ const money = require("clean-helpers/money");
 const date = require("clean-helpers/date");
 const validation = require("clean-helpers/validation");
 
-console.log(money.formatBRL(19.9)); // "R$ 19,90"
-console.log(date.monthKey(new Date())); // "2026-01"
+console.log(money.formatBRL(19.9));              // "R$ 19,90"
+console.log(date.monthKey(new Date()));          // "2026-01"
 console.log(validation.isCPF("529.982.247-25")); // true
 ```
 
 ---
 
 ## Módulos
+
+> Dica: se você já sabe qual módulo vai usar, prefira `clean-helpers/<modulo>`.
 
 - **money**: `parseMoney`, `parseMoneyStrict`, `moneyToCents`, `centsToMoney`, `formatBRL`, `formatBRLPlain`
 - **string**: `casefold`, `cleanDigits`, `includesLoose`, `titleCasePTBR`, `splitNameBrandSize`
@@ -118,6 +192,7 @@ console.log(validation.isCPF("529.982.247-25")); // true
 ### money
 
 #### parseMoney (flexível)
+
 ```js
 const { money } = require("clean-helpers");
 
@@ -128,6 +203,7 @@ money.parseMoney("(1.234,56)");  // -1234.56 (se o parser aceitar parênteses no
 ```
 
 #### parseMoneyStrict (estrito)
+
 Retorna `{ ok, value, cents, reason }`.
 
 ```js
@@ -143,6 +219,7 @@ money.parseMoneyStrict("(1.234,56)");
 ```
 
 #### moneyToCents / centsToMoney
+
 ```js
 const { money } = require("clean-helpers");
 
@@ -151,6 +228,7 @@ money.centsToMoney(123456);     // 1234.56
 ```
 
 #### formatBRL / formatBRLPlain
+
 ```js
 const { money } = require("clean-helpers");
 
@@ -163,6 +241,7 @@ money.formatBRLPlain(1234.56);  // "1.234,56"
 ### date
 
 #### parseDateBR / formatDateBR
+
 ```js
 const { date } = require("clean-helpers");
 
@@ -171,8 +250,9 @@ console.log(date.formatDateBR(d)); // "21/01/2026"
 ```
 
 #### parseISODateOrBR (ISO seguro)
-**Pegadinha real:** `"YYYY-MM-DD"` no JS pode cair em UTC e “voltar um dia” no Brasil.  
-Aqui ele é interpretado como **data local**.
+
+Pegadinha real: `"YYYY-MM-DD"` no JS pode cair em UTC e “voltar um dia” no Brasil.  
+Aqui ele é interpretado como data local.
 
 ```js
 const { date } = require("clean-helpers");
@@ -181,14 +261,16 @@ const d = date.parseISODateOrBR("2026-01-21"); // Date local do dia 21
 ```
 
 #### formatBRDatetime / parseBRDatetime
+
 ```js
 const { date } = require("clean-helpers");
 
-date.formatBRDatetime(new Date()); // "21/01/2026 18:40"
-date.parseBRDatetime("21/01/2026 10:30"); // Date
+date.formatBRDatetime(new Date());           // "21/01/2026 18:40"
+date.parseBRDatetime("21/01/2026 10:30");    // Date
 ```
 
 #### utilitários
+
 ```js
 const { date } = require("clean-helpers");
 
@@ -206,6 +288,7 @@ date.weekKeyISO(new Date()); // "2026-W04"
 ### validation
 
 #### CPF / CNPJ / CEP
+
 ```js
 const { validation } = require("clean-helpers");
 
@@ -220,6 +303,7 @@ validation.isCEP("000");       // false
 ```
 
 #### EAN-13
+
 ```js
 const { validation } = require("clean-helpers");
 
@@ -228,7 +312,8 @@ validation.isEAN13("123");           // false
 ```
 
 #### NCM / CEST (formato)
-`isNCM` e `isCEST` validam **formato** (tamanho/dígitos). Não fazem consulta oficial.
+
+`isNCM` e `isCEST` validam formato (tamanho/dígitos). Não fazem consulta oficial.
 
 ```js
 const { validation } = require("clean-helpers");
@@ -238,12 +323,13 @@ validation.isCEST("1234567"); // true
 ```
 
 #### pickValid (pega o primeiro válido)
+
 ```js
 const { validation } = require("clean-helpers");
 
 const r = validation.pickValid({
   cpf: "529.982.247-25",
-  email: "teste@dominio.com"
+  email: "teste@dominio.com",
 });
 
 console.log(r);
@@ -255,6 +341,7 @@ console.log(r);
 ### string + search
 
 #### casefold / includesLoose
+
 ```js
 const { string } = require("clean-helpers");
 
@@ -263,6 +350,7 @@ string.includesLoose("Coca-Cola 2L", "coca cola"); // true
 ```
 
 #### titleCasePTBR
+
 ```js
 const { string } = require("clean-helpers");
 
@@ -271,6 +359,7 @@ string.titleCasePTBR("EAN SKU NF");      // "EAN SKU NF"
 ```
 
 #### splitNameBrandSize (nome, marca e tamanho)
+
 ```js
 const { string } = require("clean-helpers");
 
@@ -285,6 +374,7 @@ string.splitNameBrandSize("Sabão em pó (Omo) 1kg");
 ```
 
 #### normalizeSearchText / makeSearchTokens
+
 ```js
 const { search } = require("clean-helpers");
 
@@ -302,24 +392,26 @@ search.makeSearchTokens("Coca Cola 2 l retornável");
 ```js
 const { async: A } = require("clean-helpers");
 
-await A.sleep(200);
+(async () => {
+  await A.sleep(200);
 
-const res = await A.withTimeout(Promise.resolve("ok"), 1000);
+  const res = await A.withTimeout(Promise.resolve("ok"), 1000);
 
-const r = await A.retry(async (attempt) => {
-  if (attempt < 3) throw new Error("falhou");
-  return "ok";
-}, { retries: 5 });
+  const r = await A.retry(async (attempt) => {
+    if (attempt < 3) throw new Error("falhou");
+    return "ok";
+  }, { retries: 5 });
 
-const limit = A.pLimit(3);
-await Promise.all([1,2,3,4,5].map((x) => limit(() => Promise.resolve(x))));
+  const limit = A.pLimit(3);
+  await Promise.all([1,2,3,4,5].map((x) => limit(() => Promise.resolve(x))));
 
-const out = await A.pMap([1,2,3,4], async (x) => x * 2, { concurrency: 2 });
+  const out = await A.pMap([1,2,3,4], async (x) => x * 2, { concurrency: 2 });
 
-const q = A.createQueue(async (job) => job.id, { concurrency: 2 });
-q.push({ id: 1 });
-q.push({ id: 2 });
-await q.onIdle();
+  const q = A.createQueue(async (job) => job.id, { concurrency: 2 });
+  q.push({ id: 1 });
+  q.push({ id: 2 });
+  await q.onIdle();
+})();
 ```
 
 ---
@@ -402,12 +494,12 @@ parse.parseBlackouts("2026-01-01..2026-01-03,2026-01-03");
 const { id } = require("clean-helpers");
 
 id.normId({ $oid: "507f1f77bcf86cd799439011" }); // "507f..."
-id.normId({ _id: " 123 " }); // "123"
+id.normId({ _id: " 123 " });                     // "123"
 ```
 
 ---
 
-## Testes
+## 🧪 Testes
 
 ```bash
 node --test

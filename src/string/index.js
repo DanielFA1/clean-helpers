@@ -4,7 +4,6 @@ const cleanDigits = require("./cleanDigits");
 const normalizePTBR = require("./normalizePTBR");
 const slugify = require("./slugify");
 const casefold = require("./casefold");
-const safeRegex = require("./safeRegex");
 const includesLoose = require("./includesLoose");
 
 const titleCasePTBR = require("./titleCasePTBR");
@@ -15,7 +14,6 @@ module.exports = {
   normalizePTBR,
   slugify,
   casefold,
-  safeRegex,
   includesLoose,
   titleCasePTBR,
   splitNameBrandSize,
