@@ -1,6 +1,6 @@
 {
   "name": "clean-helpers",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Helpers para Node.js com foco BR: money, date, validation, string, async e etc.",
   "keywords": [
     "helpers",
@@ -32,7 +32,6 @@
     "normalization",
     "search",
     "tokens",
-
     "validation",
     "validator",
     "document",
@@ -40,7 +39,6 @@
     "ean",
     "ean13",
     "barcode",
-
     "regex",
     "escape",
     "http",
@@ -51,7 +49,6 @@
     "quantile",
     "cache",
     "ttl",
-
     "retry",
     "timeout",
     "concurrency",
@@ -85,25 +82,54 @@
     "./parse": "./src/parse/index.js",
     "./id": "./src/id/index.js"
   },
-
   "types": "./src/index.d.ts",
   "typesVersions": {
     "*": {
-      "async": ["src/async/index.d.ts"],
-      "cache": ["src/cache/index.d.ts"],
-      "date": ["src/date/index.d.ts"],
-      "geo": ["src/geo/index.d.ts"],
-      "http": ["src/http/index.d.ts"],
-      "id": ["src/id/index.d.ts"],
-      "money": ["src/money/index.d.ts"],
-      "number": ["src/number/index.d.ts"],
-      "parse": ["src/parse/index.d.ts"],
-      "regex": ["src/regex/index.d.ts"],
-      "search": ["src/search/index.d.ts"],
-      "stats": ["src/stats/index.d.ts"],
-      "string": ["src/string/index.d.ts"],
-      "validation": ["src/validation/index.d.ts"],
-      "*": ["src/index.d.ts"]
+      "async": [
+        "src/async/index.d.ts"
+      ],
+      "cache": [
+        "src/cache/index.d.ts"
+      ],
+      "date": [
+        "src/date/index.d.ts"
+      ],
+      "geo": [
+        "src/geo/index.d.ts"
+      ],
+      "http": [
+        "src/http/index.d.ts"
+      ],
+      "id": [
+        "src/id/index.d.ts"
+      ],
+      "money": [
+        "src/money/index.d.ts"
+      ],
+      "number": [
+        "src/number/index.d.ts"
+      ],
+      "parse": [
+        "src/parse/index.d.ts"
+      ],
+      "regex": [
+        "src/regex/index.d.ts"
+      ],
+      "search": [
+        "src/search/index.d.ts"
+      ],
+      "stats": [
+        "src/stats/index.d.ts"
+      ],
+      "string": [
+        "src/string/index.d.ts"
+      ],
+      "validation": [
+        "src/validation/index.d.ts"
+      ],
+      "*": [
+        "src/index.d.ts"
+      ]
     }
   },
   "scripts": {
