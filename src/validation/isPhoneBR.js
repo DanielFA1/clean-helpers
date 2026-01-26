@@ -11,20 +11,28 @@ const cleanDigits = require("../string/cleanDigits");
  * @param {any} value
  * @returns {boolean}
  */
+// dentro de src/validation/index.js
 function isPhoneBR(value) {
-  const d = cleanDigits(value);
+    const s = String(value ?? "").trim();
+    if (!s) return false;
 
-  // com DDI
-  if (d.length === 12 || d.length === 13) {
-    if (!d.startsWith("55")) return false;
-    const rest = d.slice(2);
-    return rest.length === 10 || rest.length === 11;
-  }
+    const digits = s.replace(/\D+/g, "");
+    if (!digits) return false;
 
-  // sem DDI
-  if (d.length === 10 || d.length === 11) return true;
+    // DDI explícito: +55... ou 00 55...
+    const hasPlus = s.includes("+");
+    const has00 = /^\s*00/.test(s);
 
-  return false;
+    if (hasPlus || has00) {
+        // se tem DDI, tem que ser 55
+        if (!digits.startsWith("55")) return false;
+
+        const rest = digits.slice(2); // remove 55
+        return rest.length === 10 || rest.length === 11;
+    }
+
+    // Sem DDI explícito: BR local (DDD + número)
+    return digits.length === 10 || digits.length === 11;
 }
 
 module.exports = isPhoneBR;

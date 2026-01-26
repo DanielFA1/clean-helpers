@@ -109,52 +109,52 @@ describe("validation.assert", () => {
             (e) => e && e.name === "ValidationError" && e.code === "VALIDATION_ERROR",
         );
     });
-    describe("validation.pickValid", () => {
-        it("retorna o primeiro válido pela ordem padrão", () => {
-            const r = v.pickValid({
-                email: "teste@dominio.com",
-                cpf: "529.982.247-25",
-            });
-
-            // padrão prioriza cpf antes de email
-            assert.deepEqual(r, { type: "cpf", key: "cpf", value: "52998224725" });
+});
+describe("validation.pickValid", () => {
+    it("retorna o primeiro válido pela ordem padrão", () => {
+        const r = v.pickValid({
+            email: "teste@dominio.com",
+            cpf: "529.982.247-25",
         });
 
-        it("permite ordem custom", () => {
-            const r = v.pickValid({ email: "Teste@Dominio.com", cpf: "529.982.247-25" }, { order: ["email", "cpf"] });
-
-            assert.deepEqual(r, { type: "email", key: "email", value: "teste@dominio.com" });
-        });
-
-        it("retorna null quando nada é válido", () => {
-            const r = v.pickValid({ email: "x@", cpf: "000.000.000-00" });
-            assert.equal(r, null);
-        });
+        // padrão prioriza cpf antes de email
+        assert.deepEqual(r, { type: "cpf", key: "cpf", value: "52998224725" });
     });
 
-    describe("validation.isNCM", () => {
-        it("valida NCM 8 dígitos", () => {
-            assert.equal(v.isNCM("12345678"), true);
-            assert.equal(v.isNCM("12.34.56.78"), true);
-        });
+    it("permite ordem custom", () => {
+        const r = v.pickValid({ email: "Teste@Dominio.com", cpf: "529.982.247-25" }, { order: ["email", "cpf"] });
 
-        it("rejeita inválidos", () => {
-            assert.equal(v.isNCM("123"), false);
-            assert.equal(v.isNCM("00000000"), false);
-            assert.equal(v.isNCM("abcdefgh"), false);
-        });
+        assert.deepEqual(r, { type: "email", key: "email", value: "teste@dominio.com" });
     });
 
-    describe("validation.isCEST", () => {
-        it("valida CEST 7 dígitos", () => {
-            assert.equal(v.isCEST("1234567"), true);
-            assert.equal(v.isCEST("12.345.67"), true);
-        });
+    it("retorna null quando nada é válido", () => {
+        const r = v.pickValid({ email: "x@", cpf: "000.000.000-00" });
+        assert.equal(r, null);
+    });
+});
 
-        it("rejeita inválidos", () => {
-            assert.equal(v.isCEST("123"), false);
-            assert.equal(v.isCEST("0000000"), false);
-            assert.equal(v.isCEST("abcdefg"), false);
-        });
+describe("validation.isNCM", () => {
+    it("valida NCM 8 dígitos", () => {
+        assert.equal(v.isNCM("12345678"), true);
+        assert.equal(v.isNCM("12.34.56.78"), true);
+    });
+
+    it("rejeita inválidos", () => {
+        assert.equal(v.isNCM("123"), false);
+        assert.equal(v.isNCM("00000000"), false);
+        assert.equal(v.isNCM("abcdefgh"), false);
+    });
+});
+
+describe("validation.isCEST", () => {
+    it("valida CEST 7 dígitos", () => {
+        assert.equal(v.isCEST("1234567"), true);
+        assert.equal(v.isCEST("12.345.67"), true);
+    });
+
+    it("rejeita inválidos", () => {
+        assert.equal(v.isCEST("123"), false);
+        assert.equal(v.isCEST("0000000"), false);
+        assert.equal(v.isCEST("abcdefg"), false);
     });
 });
